@@ -1,0 +1,50 @@
+num_worker: 8
+work_dir: ./work_dir/2_20_nturgbd_CV_C48
+
+# feeder
+feeder: feeders.feeder_ntu.Feeder
+train_feeder_args:
+  data_path: /home/zzj_batc/Workspace/Data/processed-NTU/merged_joint_bones_ntu/xview
+  split: train
+  debug: False
+  random_choose: False
+  random_shift: False
+  random_move: False
+  window_size: 64
+  normalization: False
+  random_rot: True
+  p_interval: [0.5, 1]
+  bone: False
+
+test_feeder_args:
+  data_path: /home/zzj_batc/Workspace/Data/processed-NTU/merged_joint_bones_ntu/xview
+  split: test
+  window_size: 64
+  p_interval: [0.95]
+  bone: False
+  debug: False
+
+# model
+model: network.network.Model
+model_args:
+  in_channels: 6
+  num_class: 60
+  head_num: 8
+  skel: NTU
+  base_dim: 48
+  # if_encode_attn: True
+# weights: ./work_dir/11_5/runs-76-178752.pt
+
+#optim
+# start_epoch: 0
+weight_decay: 0.0004
+base_lr: 0.1
+step: [30, 50, 70]
+warm_up_epoch: 10
+
+# training
+device: [0, 1, 2, 3]
+batch_size: 256
+test_batch_size: 256
+num_epoch: 100
+nesterov: True
